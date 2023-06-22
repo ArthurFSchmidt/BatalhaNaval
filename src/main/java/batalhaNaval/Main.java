@@ -1,5 +1,6 @@
 package batalhaNaval;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -20,6 +21,8 @@ public class Main {
         if (isPvp){
             System.out.println("Insira o nome do jogador 2:");
             jogador2.nome = scan.next();
+        }else {
+            jogador2.nome = "Computador";
         }
 
         System.out.println("Jogador 1: Escolha o modo de preenchimento: \n[1] Automático \n[2] Manual");
@@ -53,11 +56,43 @@ public class Main {
         jogador2.preencher(1, isManual);
         jogador2.preencher(1, isManual);
 
+        Jogador vencedor = jogo(jogador1, jogador2, isPvp);
+
+        System.out.println("\n\nFIM DO JOGO!!");
+        System.out.println("\n"+vencedor.nome+" venceu!!");
+
+        jogador1.jogador.printMapa();
+        jogador2.jogador.printMapa();
+
+
 
 
 
 
     }
+    static public Jogador jogo(Jogador p1, Jogador p2, boolean isPvp){
+        Random rand = new Random();
+        boolean continuar = true;
 
+        if(rand.nextBoolean())
+        {
+            p1.atacar(p2,false);
+        }
+        do{
+            p2.atacar(p1, !isPvp);
+            continuar = !p2.verificarDerrota();
+            if (continuar)
+            {
+                p1.atacar(p2, false);
+                continuar = !p1.verificarDerrota();
+            }
+        }while(continuar);
+
+        if(p1.verificarDerrota())
+            return p2;
+        else
+            return p1;
+
+    }
 
 }

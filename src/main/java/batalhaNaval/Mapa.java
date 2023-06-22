@@ -1,13 +1,11 @@
 package batalhaNaval;
 
 public class Mapa {
-    public char[][] tabelaAtaques = new char[10][10];
-    // Matriz que marca os espaços já atacados.
     public char[][] tabelaVisao = new char[10][10];
     // Matriz que mostrará a visão do jogador dessa classe ao campo do jogador inimigo.
     public char[][] tabelaBarcos = new char[10][10];
     // Matriz que guardará as posições dos barcos do jogador dessa classe.
-    public int barcosRestantes = 10;
+    public int barcosRestantes = 20;
 
     public void preencherMapa(){
 
@@ -16,7 +14,6 @@ public class Mapa {
         for (int i = 0 ; i < 10; i++){
             for (int j = 0 ; j < 10; j++){
                 tabelaBarcos[i][j] = 'A';
-                tabelaAtaques[i][j] = ' ';
                 tabelaVisao[i][j] = ' ';
             }
         }
@@ -52,16 +49,16 @@ public class Mapa {
                     tabelaBarcos[x][y + i] = 'B';
                 }
             }
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public boolean isPlaceble(int x, int y){
 
         // Método que verifica se a posição do barco é válida.
 
-        if(x>=0 && x<=10 && y>=0 && y<=10){
+        if(x>=0 && x<10 && y>=0 && y<10){
             return tabelaBarcos[x][y] == 'A';
         }
         return false;
@@ -74,7 +71,11 @@ public class Mapa {
 
         char atacado = tabelaBarcos[coords[0]][coords[1]];
         if(atacado == 'B')
+        {
             barcosRestantes--;
+            tabelaBarcos[coords[0]][coords[1]] = '*';
+        }
+
         return atacado;
     }
 
@@ -85,4 +86,45 @@ public class Mapa {
         tabelaVisao[coords[0]][coords[1]] = visao;
     }
 
+    public void printMapa()
+    {
+        char[] colunas = "ABCDEFGHIJ".toCharArray();
+
+        System.out.print("  ");
+        for (int i = 0 ; i < 10 ; i++)
+            System.out.print(i+" ");
+        System.out.println();
+
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            System.out.print(colunas[i]+ " ");
+            for (int j = 0 ; j < 10 ; j++)
+            {
+                System.out.print(this.tabelaBarcos[i][j]+ " ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    public void printVisao()
+    {
+        char[] colunas = "ABCDEFGHIJ".toCharArray();
+
+        System.out.print("  ");
+        for (int i = 0 ; i < 10 ; i++)
+            System.out.print(i+" ");
+        System.out.println();
+
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            System.out.print(colunas[i]+ " ");
+            for (int j = 0 ; j < 10 ; j++)
+            {
+                System.out.print(this.tabelaVisao[i][j]+ " ");
+            }
+            System.out.println();
+        }
+
+    }
 }

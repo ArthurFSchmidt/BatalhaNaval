@@ -19,8 +19,8 @@ public class Jogador {
 
         // Método para receber os valores e colocar um barco no mapa
 
-        int valorX = -1, valorY = -1;
-        boolean isVertical = false;
+        int valorX, valorY;
+        boolean isVertical;
 
         // Se estiver no modo manual, pedirá ao usuário as informações necessárias.
         // Repete a coleta de valores até serem inseridos valores válidos.
@@ -29,8 +29,8 @@ public class Jogador {
         if(isManual){
             do{
                 System.out.println("=== Valores do barco de tamanho "+tamanho+" ===");
-                System.out.println("Digite a direção do barco: [1] Vertical [0] Horizontal");
-                isVertical = 1 == scan.nextInt();
+                System.out.println("Digite a direção do barco: [0] Vertical [1] Horizontal");
+                isVertical = 0 == scan.nextInt();
                 System.out.println("Insira a posição da linha inicial do barco:");
                 valorX = charToIntCoord(scan.next().toUpperCase().charAt(0));
                 System.out.println("Insira a posição da coluna inicial do barco:");
@@ -44,23 +44,23 @@ public class Jogador {
             }while(jogador.colocarBarco(tamanho,valorX,valorY,isVertical));
         }
     }
-    public int[] bombear(boolean isPvp) {
+    public int[] bombear(boolean auto) {
 
         // Recebe do jogador ou randomiza as coordenas do ataque, retorna como array.
 
         int valorX;
         int valorY;
         int[] coords = new int[2];
-        if (isPvp){
+        if (!auto){
             do {
                 System.out.println("Insira a posição da linha a ser bombeada:");
                 valorX = charToIntCoord(scan.next().toUpperCase().charAt(0));
-            } while (valorX < 1 || valorX > 10);
+            } while (valorX < 0 || valorX > 9);
             coords[0] = valorX;
             do {
                 System.out.println("Insira a posição da coluna a ser bombeada:");
                 valorY = scan.nextInt();
-            } while (valorY < 1 || valorY > 10);
+            } while (valorY < 0 || valorY > 9);
             coords[1] = valorY;
         }else{
             coords[0] = rand.nextInt(10);
@@ -72,22 +72,34 @@ public class Jogador {
 
         // Recebe uma coordenada tipo char e retorna uma coodenada tipo int equivalente.
 
-        return coordChar-64;
+        return coordChar-65;
     }
-    public void atacar(Jogador atacado, boolean isPvp){
+    public void atacar(Jogador atacado, boolean auto){
 
         // Método que recebe as coordenadas bombeadas e verifica se já foram atacadas.
         // Passa as coordenadas para o adversário e recebe a char atacada.
 
+        System.out.println("Rodada de "+this.nome);
+
         int[] coords;
 
         do{
-            coords = this.bombear(isPvp);
-        }while(jogador.tabelaVisao[coords[0]][coords[1]] == ' ');
+            if(!auto)
+            {
+                System.out.println("Sua visão do mapa do oponente:");
+                this.jogador.printVisao();
+            }
+            coords = this.bombear(auto);
+        }while(jogador.tabelaVisao[coords[0]][coords[1]] != ' ');
 
-        this.jogador.receberVisao(coords, atacado.jogador.receberAtaque(coords));
+        char local = atacado.jogador.receberAtaque(coords);
+
+        this.jogador.receberVisao(coords, local);
+
+        if (local == 'B')
+            this.atacar(atacado, auto);
     }
     public boolean verificarDerrota(){
-        return jogador.barcosRestantes <= 1;
+        return jogador.barcosRestantes < 1;
     }
 }
