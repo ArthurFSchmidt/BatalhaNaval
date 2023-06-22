@@ -32,10 +32,10 @@ public class Mapa {
         // Chama o método isPlaceble para validar os espaços do barco.
         for(int i=0 ; i<tamanho ; i++){
             if (isVertical){
-                if(!isPlaceble(x+i,y))
+                if(isNotPlaceble(x + i, y))
                     isValid = false;
             }else{
-                if(!isPlaceble(x,y+i))
+                if(isNotPlaceble(x, y + i))
                     isValid = false;
             }
         }
@@ -54,14 +54,14 @@ public class Mapa {
         return true;
     }
 
-    public boolean isPlaceble(int x, int y){
+    public boolean isNotPlaceble(int x, int y){
 
         // Método que verifica se a posição do barco é válida.
 
         if(x>=0 && x<10 && y>=0 && y<10){
-            return tabelaBarcos[x][y] == 'A';
+            return tabelaBarcos[x][y] != 'A';
         }
-        return false;
+        return true;
     }
 
     public char receberAtaque(int[] coords){
@@ -90,20 +90,24 @@ public class Mapa {
     {
         char[] colunas = "ABCDEFGHIJ".toCharArray();
 
-        System.out.print("  ");
+        System.out.print("    ");
         for (int i = 0 ; i < 10 ; i++)
-            System.out.print(i+" ");
-        System.out.println();
+            System.out.print(colunas[i]+" ");
+        System.out.println("\n");
 
         for (int i = 0 ; i < 10 ; i++)
         {
-            System.out.print(colunas[i]+ " ");
+            System.out.print(i+ "   ");
             for (int j = 0 ; j < 10 ; j++)
             {
                 System.out.print(this.tabelaBarcos[i][j]+ " ");
             }
             System.out.println();
         }
+        System.out.println("--- [LEGENDA] ---");
+        System.out.println("A --> Água");
+        System.out.println("B --> Barco");
+        System.out.println("* --> Barco Destruído");
 
     }
 
@@ -111,20 +115,23 @@ public class Mapa {
     {
         char[] colunas = "ABCDEFGHIJ".toCharArray();
 
-        System.out.print("  ");
+        System.out.print("    ");
         for (int i = 0 ; i < 10 ; i++)
-            System.out.print(i+" ");
-        System.out.println();
+            System.out.print(colunas[i]+" ");
+        System.out.println("\n");
 
         for (int i = 0 ; i < 10 ; i++)
         {
-            System.out.print(colunas[i]+ " ");
+            System.out.print(i+ "   ");
             for (int j = 0 ; j < 10 ; j++)
             {
                 System.out.print(this.tabelaVisao[i][j]+ " ");
             }
             System.out.println();
         }
-
+        System.out.println("--- [LEGENDA] ---");
+        System.out.println("A --> Água");
+        System.out.println("B --> Barco");
+        System.out.println("Vazio --> Não atacado");
     }
 }

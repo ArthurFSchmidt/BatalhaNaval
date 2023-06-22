@@ -26,15 +26,20 @@ public class Jogador {
         // Repete a coleta de valores até serem inseridos valores válidos.
         // No modo automático randomizará os valores.
 
+        if (isManual){
+            System.out.println("Seu mapa:");
+            this.jogador.printMapa();
+        }
+
         if(isManual){
             do{
                 System.out.println("=== Valores do barco de tamanho "+tamanho+" ===");
                 System.out.println("Digite a direção do barco: [0] Vertical [1] Horizontal");
                 isVertical = 0 == scan.nextInt();
                 System.out.println("Insira a posição da linha inicial do barco:");
-                valorX = charToIntCoord(scan.next().toUpperCase().charAt(0));
+                valorX = scan.nextInt();
                 System.out.println("Insira a posição da coluna inicial do barco:");
-                valorY = scan.nextInt();
+                valorY = charToIntCoord(scan.next().toUpperCase().charAt(0));
             }while(jogador.colocarBarco(tamanho,valorX,valorY,isVertical));
         }else{
             do{
@@ -54,12 +59,12 @@ public class Jogador {
         if (!auto){
             do {
                 System.out.println("Insira a posição da linha a ser bombeada:");
-                valorX = charToIntCoord(scan.next().toUpperCase().charAt(0));
+                valorX = scan.nextInt();
             } while (valorX < 0 || valorX > 9);
             coords[0] = valorX;
             do {
                 System.out.println("Insira a posição da coluna a ser bombeada:");
-                valorY = scan.nextInt();
+                valorY = charToIntCoord(scan.next().toUpperCase().charAt(0));
             } while (valorY < 0 || valorY > 9);
             coords[1] = valorY;
         }else{
