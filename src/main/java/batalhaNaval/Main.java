@@ -90,7 +90,9 @@ public class Main {
         System.out.println("\n\nFIM DO JOGO!!");
         System.out.println("\n"+vencedor.nome+" venceu!!");
 
+        System.out.println("Mapa de "+jogador1.nome);
         jogador1.jogador.printMapa();
+        System.out.println("Mapa de "+jogador2.nome);
         jogador2.jogador.printMapa();
 
 
